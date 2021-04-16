@@ -1,7 +1,7 @@
-;;; run with scheme < main.scm
+;;; run with scheme < exercise1.scm
 ;;; reference: https://www.gnu.org/software/mit-scheme/documentation/stable/mit-scheme-ref.html
 
-;;; Exercise 2.1
+;;; Exercise 2.2
 
 ; restricts arity of a procedure
 (define (restrict-arity proc nargs) 
@@ -16,7 +16,6 @@
 
 (define arity-table (make-key-weak-eqv-hash-table)) 
 
-
 ; compose procedure checking arity
 (define (compose f g)
   (assert (= (get-arity f) 1))
@@ -26,7 +25,7 @@
   (restrict-arity the-composition (get-arity g))
   the-composition)
 
-; tests
+;:: Tests
 (define foo (lambda (x) (* x x)))
 (assert (= (get-arity foo) 1))
 
@@ -39,4 +38,4 @@
 
 (define foofoo (compose foo foo))
 ((assert (= (get-arity foofoo) 1))
-(assert (= (foofoo 3) 27))
+(assert (= (foofoo 3) 81))
