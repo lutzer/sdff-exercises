@@ -1,4 +1,4 @@
-;;; run with scheme < exercise1.scm
+;;; run with scheme < exercise21.scm
 ;;; reference: https://www.gnu.org/software/mit-scheme/documentation/stable/mit-scheme-ref.html
 
 ;;; Exercise 2.2
