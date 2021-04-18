@@ -112,6 +112,45 @@
           ((<= h (/ 300 360)) (make-rgb-color x 0.0 c))
           (else (make-rgb-color c 0.0 x)))))
 
+(define (rgb->hsl rgb)
+    (assert (rgb-color? rgb))
+    (let* ((r (rgb-color-r rgb)) 
+        (g (rgb-color-g rgb)) 
+        (b (rgb-color-b rgb)) 
+        (cmax (max r g b))
+        (cmin (min r g b))
+        (delta (- cmax cmin)))
+            (let ((h (* (/ 60 360) (cond 
+              ((= delta 0) h)
+              ((= cmax r) (modulo (/ (- g b) delta) 6))
+              ((= cmax g) (+ (/ (- b r) delta) 2))
+              ((= cmax b) (+ (/ (- r g) delta) 4)))))
+              (s (if (= delta 0)
+                0
+                (/ delta ((- 1 (abs (- (* 2 l) 1)))))))
+              (l (/ (+ cmax cmin) 2)))
+              (make-hsl-color h s l))))
+
+
+(define (rgb->hsl rgb)
+    (assert (rgb-color? rgb))
+    (let* ((r (rgb-color-r rgb)) 
+        (g (rgb-color-g rgb)) 
+        (b (rgb-color-b rgb)) 
+        (cmax (max r g b))
+        (cmin (min r g b))
+        (delta (- cmax cmin)))
+            (let ((h (* (/ 60 360) (cond 
+              ((= delta 0) 0)
+              ((= cmax r) (modulo (/ (- g b) delta) 6))
+              ((= cmax g) (+ (/ (- b r) delta) 2))
+              ((= cmax b) (+ (/ (- r g) delta) 4)))))
+              (s (if (= delta 0)
+                0
+                (/ delta ((- 1 (abs (- (* 2 l) 1)))))))
+              (l (/ (+ cmax cmin) 2)))
+              (make-hsl-color h s l))))
+
 (register-unit-conversion
  'hsl
  'rgb

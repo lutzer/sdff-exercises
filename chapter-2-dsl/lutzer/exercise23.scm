@@ -19,9 +19,11 @@
     (define (the-composition . args)
       (assert (check-arity-for-arguments g (length args)))
       (assert (check-arity-for-arguments f (length args)))
-      (h (apply f args) (apply g args)))
+      (let ((res1 (apply f args) ) (res2 (apply g args)))
+        ;need to find the concatenate values operator for this to work
+      )
     (restrict-arity the-composition a)
-    the-composition))
+    the-composition)))
 
 ;;; Tests
 (define foo (lambda (x) (* x x)))

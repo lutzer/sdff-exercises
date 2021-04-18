@@ -30,7 +30,7 @@
 ; spread combinator checking only for the minimum of arity
 (define (spread-combine f g h)
   (assert (check-arity-for-arguments h 2))
-  (let ((n ((compose car get-arity) f)) (m ((compose cdr get-arity) f)))
+  (let ((n ((  car get-arity) f)) (m ((compose cdr get-arity) f)))
     (define (the-composition . args)
       (assert (= (length args) (+ m n)))
       (h (apply f (take args n)) (apply g (drop args n))))
