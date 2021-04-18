@@ -6,6 +6,12 @@
 
 (load "_arity.scm")
 
+; compose accepting multiple return values
+(define (compose2 f g)
+  (define (the-composition . args)
+    (call-with-values (lambda () (apply g args) f)))
+  the-composition)
+
 ; parallel combine procedure that accepts multiple return values from f and g feeding them into h
 (define (parallel-combine h f g)
   (let ((a (get-arity-combined f g)))
@@ -20,6 +26,7 @@
 ;;; Tests
 (define foo (lambda (x) (* x x)))
 (define bar (lambda (x y) (+ x y)))
+(define foo-mult (lambda (x) (values x x)))
 
 (define barfoofoo (parallel-combine bar foo foo))
 (let ((a (get-arity barfoofoo) ))
@@ -34,4 +41,9 @@
 (assert (= (barplusminus 2 3) 4))
 
 ; should fail:
-(define foofoobar (parallel-combine foo foo bar))
+; (define foofoobar (parallel-combine foo foo bar))
+
+; (define foofoomult (compose2 foo foo-mult))
+((compose2 bar foo-mult) 2)
+
+
