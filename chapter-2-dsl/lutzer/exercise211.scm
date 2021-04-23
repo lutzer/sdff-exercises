@@ -112,10 +112,35 @@
           ((<= h (/ 300 360)) (make-rgb-color x 0.0 c))
           (else (make-rgb-color c 0.0 x)))))
 
+
+(define (rgb->hsl rgb)
+    (assert (rgb-color? rgb))
+    (let* ((r (rgb-color-r rgb)) 
+        (g (rgb-color-g rgb)) 
+        (b (rgb-color-b rgb)) 
+        (cmax (max r g b))
+        (cmin (min r g b))
+        (delta (- cmax cmin)))
+            (let* ((h (* (/ 60 360) (cond 
+                ((= delta 0) 0)
+                ((= cmax r) (* (/ (- g b) delta) 1))
+                ((= cmax g) (+ (/ (- b r) delta) 2))
+                ((= cmax b) (+ (/ (- r g) delta) 4)))))
+                (l (/ (+ cmax cmin) 2))
+                (s (if (= delta 0)
+                  0
+                  (/ delta (- 1 (abs (- (* 2 l) 1)))))))
+              (make-hsl-color h l s))))
+
+(hsl->string (rgb->hsl (make-rgb-color 0 0 0)))
+(hsl->string (rgb->hsl (make-rgb-color 0 0 1)))
+(hsl->string (rgb->hsl (make-rgb-color 0 1 0)))
+(hsl->string (rgb->hsl (make-rgb-color 1 0 0)))
+
 (register-unit-conversion
  'hsl
  'rgb
- (make-unit-conversion hsl->rgb hsl->rgb))
+ (make-unit-conversion hsl->rgb rgb->hsl))
 
 ((make-converter 'hsl 'rgb) (make-hsl-color 0.5 0.5 0.5))
 (rgb-color-r (hsl->rgb (make-hsl-color 0.5 0.5 0.5)))
